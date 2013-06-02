@@ -2,16 +2,13 @@
 (function(){
 
   var opts = {
+    container: 'container',
     file: {
-      name: "epiceditor",
-      defaultContent: "###Hello Markdown\n\nSome math $\\sqrt4=2$ here.\n",
+      name: 'marktex',
+      defaultContent: '###Hello Markdown\n\nSome math $\\sqrt4=2$ here.\n',
       autoSave: 100
     },
-    theme: {
-      base: "/themes/base/epiceditor.css",
-      editor: "/themes/editor/epic-dark.css", // epic-light.css
-      preview: "/themes/preview/github.css"   // bartik.css, preview-dark.css
-    },
+    theme: 'light',
     shortcut: {
       modifier: 18,
       fullscreen: 70,
@@ -19,65 +16,14 @@
     }
   }
 
-  var editor = new EpicEditor(opts).load();
-
-  var previewer = editor.getElement("previewer");
-  var previewWindow = editor.getElement("previewerIframe").contentWindow;
-
-  loadParser(previewer);
-
-  function loadParser(document) {
-    var script = document.createElement("script");
-    script.type = "text/x-mathjax-config";
-    script[(window.opera ? "innerHTML" : "text")] =
-      "MathJax.Hub.Config({\n" +
-      "  skipStartupTypeset: true,\n" +
-      "  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},\n" +
-      "  TeX: { extensions: ['color.js', 'extpfeil.js'] },\n" +
-      "  'HTML-CSS': { imageFont: null }\n" +
-      "});"
-    var head = document.getElementsByTagName("head")[0];
-    head.appendChild(script);
-
-    loadScript(document, "http://cdn.mathjax.org/mathjax/2.1-latest/MathJax.js?config=TeX-AMS_HTML", function(){
-      loadScript(document, "markedit/mathjax.js", function(){
-        bindEvent();
-      });
-    });
-  }
-
-  function loadScript(document, url, callback) {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = url;
-    if (script.readyState) {
-      script.onreadystatechange = function() {
-        if (script.readyState == "loaded" || script.readyState == "complete") {
-          script.onreadystatechange = null;
-          callback();
-        }
-      };
-    } else {
-      script.onload = function() { callback(); };
-    }
-    document.body.appendChild(script);
-  }
-
-  function bindEvent() {
-    editor.on('preview', function() {
-      typeset();
-    });
-  }
-
-  function typeset() {
-    previewWindow.typeset(previewer);
-  }
+  var editor = new JaxMark(opts).load();
+  var codearea = editor.getElement("codearea");
 
   function doOpen(evt) {
     var file = evt.target.files[0],
         reader = new FileReader();
     reader.onload = function() {
-      editor.importFile("some-file", this.result);
+      codearea.value = this.result;
     };
     reader.readAsText(file);
   }
@@ -90,7 +36,7 @@
   }
 
   function doSave() {
-    var value = editor.exportFile(), type = "text/markdown";
+    var value = codearea.value, type = "text/markdown";
     if (typeof window.Blob == "function") {
       var blob = new Blob([value], {type: type});
     } else {

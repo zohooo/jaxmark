@@ -1,0 +1,12 @@
+
+#codewrap, #codearea {
+  background: white;
+  color: black;
+  font-family: monospace;
+}
+
+#showwrap , #showarea {
+  background: #f5f5f5;
+  color: black;
+  font-family: serif;
+}

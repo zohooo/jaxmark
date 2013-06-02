@@ -16,11 +16,23 @@
     </span>
   </div>
   <div id="main">
-    <div id="epiceditor"></div>
+    <div id="container"></div>
   </div>
 </div>
-<script src="epiceditor/js/epiceditor.min.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  skipStartupTypeset: true,
+  showProcessingMessages: true,
+  tex2jax: {inlineMath: [['$','$']],
+            displayMath: [['$$','$$']],
+            processEnvironments: false},
+  'HTML-CSS': { imageFont: null }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script src="jquery/jquery-1.8.3.min.js"></script>
+<script src="library/marked/marked.js"></script>
+<script src="library/jaxmark/jaxmark.js"></script>
 <script src="markedit/jaxmark.js"></script>
 <script type="text/javascript">
 (function(){
