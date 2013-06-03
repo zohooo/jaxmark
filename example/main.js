@@ -6,7 +6,7 @@
     file: {
       name: 'marktex',
       defaultContent: '---\ntitle: Hello Markdown\ndate: 2013-06-03 20:35\n---\n\n'
-                    + '###Hello Markdown\n\nSome math $A_1=\{x|x<1\}$ here.\n',
+                    + '###Hello Markdown\n\nSome math $A_1=\\{x|x<1\\}$ here.\n',
       autoSave: 100
     },
     theme: 'light',
