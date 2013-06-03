@@ -43,6 +43,20 @@
     return elements[name];
   };
 
+  JaxMark.prototype.exportFiles = function(type) {
+    var code = elements['codearea'];
+    var parts = splitText(code.value), head = parts[0], body = parts[1];
+    switch (type) {
+      case 'markdown':
+        body = escapeTex(body);
+        return head ? '---\n' + head + '\n---\n' + body : body;
+      case 'mathjax':
+        return marked(escapeTex(body));
+      case 'wordpress':
+        return marked(escapeTex(body, 'latex'));
+    }
+  }
+
   function loadStyles(url) {
     var link = document.createElement("link");
     link.rel = "stylesheet";
@@ -69,29 +83,31 @@
 
   function preview() {
     var code = elements['codearea'], show = elements['showarea'];
+    var body = splitText(code.value)[1];
     if (window.MathJax) {
-      show.innerHTML = marked(escapeTex(getBody(code.value)));
+      show.innerHTML = marked(escapeTex(body));
       MathJax.Hub.Queue(["Typeset", MathJax.Hub, show]);
     } else {
-      show.innerHTML = marked(getBody(code.value));
+      show.innerHTML = marked(body);
     }
   }
 
-  function getBody(text) {
+  function splitText(text) {
     var re = /^---(\n|\r\n|\r)([\w\W]+?)\1---\1([\w\W]*)/, result = re.exec(text);
-    return (result ? result[3] : text);
+    return (result ? [result[2], result[3]] : ['', text]);
   }
 
-  function escapeTex(text) {
-    var out = text.replace(/(\${1,2})((?:\\.|[^$])*)\1/g, function(m){
-      m = m.replace(/_/g, '\\_')
+  function escapeTex(text, label) {
+    var out = text.replace(/(\${1,2})((?:\\.|[^$])*)\1/g, function(m, $1, $2){
+      $2 = $2.replace(/_/g, '\\_')
            .replace(/</g, '\\lt ')
            .replace(/\|/g, '\\vert ')
            .replace(/\[/g, '\\lbrack ')
            .replace(/\\{/g, '\\lbrace ')
            .replace(/\\}/g, '\\rbrace ')
            .replace(/\\\\/g, '\\\\\\\\');
-      return m;
+      if (label) $2 = label + ' ' + $2;
+      return $1 + $2 + $1;
     });
     return out;
   }

@@ -16,9 +16,9 @@
       <li>
         <span>&#9662;Export</span>
         <ul class="menu1">
-          <li><span>Html with WordPress LaTeX</span></li>
-          <li><span>Html with MathJax LaTeX</span></li>
-          <li><span>Markdown with Escaped LaTeX</span></li>
+          <li><span id="export-wordpress">Html with WordPress LaTeX</span></li>
+          <li><span id="export-mathjax">Html with MathJax LaTeX</span></li>
+          <li><span id="export-markdown">Markdown with Escaped LaTeX</span></li>
         </ul>
       </li>
     </ul>
@@ -26,6 +26,10 @@
   <div id="main">
     <div id="container"></div>
   </div>
+</div>
+<div id="dialog">
+  <div id="dialog-head"><span id="dialog-title">Export File</span><span id="dialog-close">&#215;</span></div>
+  <div id="dialog-body"><textarea id="dialog-text"></textarea></div>
 </div>
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({

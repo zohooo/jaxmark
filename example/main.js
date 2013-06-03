@@ -5,7 +5,8 @@
     container: 'container',
     file: {
       name: 'marktex',
-      defaultContent: '###Hello Markdown\n\nSome math $\\sqrt4=2$ here.\n',
+      defaultContent: '---\ntitle: Hello Markdown\ndate: 2013-06-03 20:35\n---\n\n'
+                    + '###Hello Markdown\n\nSome math $A_1=\{x|x<1\}$ here.\n',
       autoSave: 100
     },
     theme: 'light',
@@ -18,6 +19,8 @@
 
   var editor = new JaxMark(opts).load();
   var codearea = editor.getElement("codearea");
+
+  bindHandler();
 
   function doOpen(evt) {
     var file = evt.target.files[0],
@@ -75,17 +78,26 @@
     doSave();
   }
 
-  function addFileHandler() {
-    var openbtn = document.getElementById("openbtn"),
-        savebtn = document.getElementById("savebtn");
-    openbtn.onclick = fileOpen;
-    savebtn.onclick = fileSave;
+  function bindHandler() {
+    var opensel = document.getElementById("opensel");
+    if (hasFileReader() && hasFileSaver()) {
+      opensel.style.visibility = "visible";
+      opensel.addEventListener("change", doOpen, false);
+      changeFileDisplay(true);
+    } else {
+      opensel.style.display = "none";
+    }
+    document.getElementById("export-wordpress").onclick = exportMark;
+    document.getElementById("export-mathjax").onclick = exportMark;
+    document.getElementById("export-markdown").onclick = exportMark;
   }
 
   function changeFileDisplay(display) {
     var openbtn = document.getElementById("openbtn"),
         savebtn = document.getElementById("savebtn");
     if (display) {
+      openbtn.onclick = fileOpen;
+      savebtn.onclick = fileSave;
       openbtn.style.display = "inline-block";
       savebtn.style.display = "inline-block";
     } else {
@@ -102,14 +114,15 @@
     return window.URL || window.webkitURL;
   }
 
-  var opensel = document.getElementById("opensel");
-  if (hasFileReader() && hasFileSaver()) {
-    opensel.style.visibility = "visible";
-    opensel.addEventListener("change", doOpen, false);
-    addFileHandler();
-    changeFileDisplay(true);
-  } else {
-    opensel.style.display = "none";
+  function exportMark(event) {
+    var dialog = document.getElementById('dialog'),
+        close = document.getElementById('dialog-close'),
+        area = document.getElementById('dialog-text');
+    var id = event.target.id, type = id.split('-')[1];
+    area.value = editor.exportFiles(type);
+    dialog.style.display = 'block';
+    close.onclick = function(){dialog.style.display = 'none'};
+    area.focus();
   }
 
 })();
