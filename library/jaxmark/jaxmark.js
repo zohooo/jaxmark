@@ -12,16 +12,6 @@
     var container = document.getElementById(options.container),
         text = options.file.defaultContent;
 
-    container.innerHTML = '<div id="codewrap"><textarea id="codearea">' + text + '</textarea></div>'
-                        + '<div id="showwrap"><div id="showarea"></div></div>';
-    elements = {
-      container: container,
-      codewrap: container.firstChild,
-      showwrap: container.lastChild,
-      codearea: codewrap.firstChild,
-      showarea: showwrap.lastChild
-    }
-
     var path = (function(name) {
       var scripts = document.getElementsByTagName('script');
       for (var i = scripts.length - 1; i >= 0; --i) {
@@ -34,6 +24,16 @@
     })('jaxmark.js');
     loadStyles(path + 'jaxmark.css');
     loadStyles(path + 'theme/' + options.theme + '.css');
+
+    container.innerHTML = '<div id="codewrap"><textarea id="codearea">' + text + '</textarea></div>'
+                        + '<div id="showwrap"><div id="showarea"></div></div>';
+    elements = {
+      container: container,
+      codewrap: container.firstChild,
+      showwrap: container.lastChild,
+      codearea: codewrap.firstChild,
+      showarea: showwrap.lastChild
+    }
 
     initEditor();
     return this;
