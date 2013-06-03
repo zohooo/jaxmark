@@ -98,16 +98,24 @@
   }
 
   function escapeTex(text, label) {
-    var out = text.replace(/(\${1,2})((?:\\.|[^$])*)\1/g, function(m, $1, $2){
-      $2 = $2.replace(/_/g, '\\_')
-           .replace(/</g, '\\lt ')
+    var re = /(\n|\r\n|\r)*(\${1,2})((?:\\.|[^$])*)\2(\n|\r\n|\r)*/g;
+    var out = text.replace(re, function(m, c1, c2, c3, c4){
+      c3 = c3.replace(/_/g, '\\_')
+           .replace(/</g, '&lt;')
            .replace(/\|/g, '\\vert ')
            .replace(/\[/g, '\\lbrack ')
            .replace(/\\{/g, '\\lbrace ')
            .replace(/\\}/g, '\\rbrace ')
            .replace(/\\\\/g, '\\\\\\\\');
-      if (label) $2 = label + ' ' + $2;
-      return $1 + $2 + $1;
+      var start, end;
+      if (label) {
+        start = (c2 == '$') ? '$' + label + ' ' : '\n\n<p align="center">$' + label + ' ';
+        end = (c2 == '$') ? '$': '$\n</p>\n\n';
+      } else {
+        start = (c2 == '$') ? c2 : '\n\n' + c2;
+        end = (c2 == '$') ? c2 : c2 + '\n\n';
+      }
+      return start + c3 + end;
     });
     return out;
   }

@@ -6,7 +6,8 @@
     file: {
       name: 'marktex',
       defaultContent: '---\ntitle: Hello Markdown\ndate: 2013-06-03 20:35\n---\n\n'
-                    + '###Hello Markdown\n\nSome math $A_1=\\{x|x<1\\}$ here.\n',
+                    + '###Hello Markdown\n\nSome inline math $A_1=\\{x|x<1\\}$ here, and some displayed math here'
+                    + '\n\n$$e^{ix}=\\cos x+i\\sin x.$$\n\nYou could export it as a **blog** article.',
       autoSave: 100
     },
     theme: 'light',
