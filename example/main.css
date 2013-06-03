@@ -7,18 +7,19 @@ body, html, wrap {
 }
 
 #head {
-  height: 28px;
-  padding: 4px 0 2px 8px;
-  font-weight: bold;
-  font-family: Arial, Helvetica, sans-serif;
-  overflow: hidden;
+  height: 30px;
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
   border-bottom: 1px solid gray;
   white-space: nowrap;
   position: relative;
+  background: #f0f0f0;
 }
 
 #logo {
-  border-bottom: 1px dotted gray;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 30px;
+  margin-left: 10px;
 }
 
 #opensel {
@@ -26,23 +27,76 @@ body, html, wrap {
   visibility: hidden;
 }
 
-.button {
-  border: 1px solid #777777;
-  background: #E0E0E0;
-  border-radius: 2px;
-  font-family: Arial, Helvetica, sans-serif;
-  display: none;
+#head .menu, #head .menu1 {
+  list-style-type: none;
 }
 
-.button:hover {
+#head .menu {
+  overflow: visible;
+  display: inline-block;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #6d6d6d;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+#head .menu > li {
+  height: 100%;
+  line-height: 30px;
+  padding: 0;
+  float: left;
+}
+
+#head .menu > li  span {
+  display: inline-block;
+  padding: 0 8px;
+}
+
+#head .menu > li  span:hover {
   color: white;
-  border: 1px solid #222280;
-  background: #3069B6;
+  background: #369;
+  cursor: pointer;
+}
+
+#head .menu li > ul {
+  display: none;
+  padding: 0;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 210px;
+  border: 1px solid gray;
+  background: #f0f0f0;
+}
+
+#head .menu li:hover > ul {
+  display: block;
+}
+
+#head .menu1 > li {
+  padding: 0;
+  width: 100%;
+}
+
+#head .menu1 > li span {
+  text-align: right;
+  padding: 0 7px;
+  width: 196px;
+}
+
+#openbtn, #savebtn {
+  display: none;
 }
 
 #main {
   position: absolute;
-  top: 35px;
+  top: 31px;
   left: 0;
   bottom: 0;
   width: 100%;

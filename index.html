@@ -8,12 +8,20 @@
 <body>
 <div id="wrap">
   <div id="head">
-    <span id="logo">JaxMark</span>
-    <span class="btngroup">
-      <input type="file" id="opensel" />
-      <input type="button" class="button" id="openbtn" value="Open" />
-      <input type="button" class="button" id="savebtn" value="Save" />
-    </span>
+    <span id="logo">JaxMark Editor</span>
+    <input type="file" id="opensel" />
+    <ul class="menu">
+      <li><span id="openbtn">Open</span></li>
+      <li><span id="savebtn">Save</span></li>
+      <li>
+        <span>&#9662;Export</span>
+        <ul class="menu1">
+          <li><span>Html with WordPress LaTeX</span></li>
+          <li><span>Html with MathJax LaTeX</span></li>
+          <li><span>Markdown with Escaped LaTeX</span></li>
+        </ul>
+      </li>
+    </ul>
   </div>
   <div id="main">
     <div id="container"></div>
