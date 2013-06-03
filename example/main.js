@@ -54,9 +54,8 @@
     if (month < 10) month = "0" + month;
     if (date < 10) date = "0" + date;
     var name = year + "-" + month + "-" + date + ".md";
-    if (($.browser.chrome && parseFloat($.browser.version) >= 14) ||
-        ($.browser.mozilla && parseFloat($.browser.version) >= 20)) {
-      var anchor = document.createElement("a");
+    var anchor = document.createElement('a');
+    if ('download' in anchor) {
       anchor.style.visibility = "hidden";
       anchor.href = bloburl;
       anchor.download = name;
@@ -65,7 +64,7 @@
       evt.initEvent("click", true, true);
       anchor.dispatchEvent(evt);
       document.body.removeChild(anchor);
-    } else if ($.browser.msie && parseFloat($.browser.version)>= 10) {
+    } else if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, name);
     } else {
       location.href = bloburl;
@@ -95,13 +94,16 @@
     }
   }
 
+  function hasFileReader() {
+    return typeof(window.FileReader) == 'function';
+  }
+
+  function hasFileSaver() {
+    return window.URL || window.webkitURL;
+  }
+
   var opensel = document.getElementById("opensel");
-  var browser = $.browser;
-  if ((browser.mozilla && parseFloat(browser.version) >= 6) ||
-      (browser.chrome && parseFloat(browser.version) >= 8) ||
-      (browser.msie && parseFloat(browser.version) >= 10) ||
-      (browser.safari && parseFloat(browser.version) >= 6) ||
-      (browser.opera && parseFloat(browser.version) >= 12.10)) {
+  if (hasFileReader() && hasFileSaver()) {
     opensel.style.visibility = "visible";
     opensel.addEventListener("change", doOpen, false);
     addFileHandler();
