@@ -95,7 +95,7 @@ body, html, wrap {
   width: 196px;
 }
 
-#openbtn, #savebtn {
+#head #openbtn, #head #savebtn {
   display: none;
 }
 
