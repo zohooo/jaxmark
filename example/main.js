@@ -1,4 +1,6 @@
 
+if (!window.console) console = {log : function() {}};
+
 (function(){
 
   var opts = {
@@ -116,10 +118,12 @@
   }
 
   function exportMark(event) {
+    if (!event) event = window.event;
     var dialog = document.getElementById('dialog'),
         close = document.getElementById('dialog-close'),
         area = document.getElementById('dialog-text');
-    var id = event.target.id, type = id.split('-')[1];
+    var target = event.target || event.srcElement;
+    var id = target.id, type = id.split('-')[1];
     area.value = editor.exportFiles(type);
     dialog.style.display = 'block';
     close.onclick = function(){dialog.style.display = 'none'};
