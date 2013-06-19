@@ -1,6 +1,7 @@
 
 (function() {
   var elements = {};
+  var screen = 'large', mode = 'edit';
 
   function JaxMark(opts) {
     this.options = opts;
@@ -25,16 +26,25 @@
     loadStyles(path + 'jaxmark.css');
     loadStyles(path + 'theme/' + options.theme + '.css');
 
-    container.innerHTML = '<div id="codewrap"><textarea id="codearea">' + text + '</textarea></div>'
-                        + '<div id="showwrap"><div id="showarea"></div></div>';
+    container.innerHTML = ['<div id="codewrap">',
+                             '<textarea id="codearea">' + text + '</textarea>',
+                             '<span id="codemove">&#9664;</span>',
+                           '</div>',
+                           '<div id="showwrap">',
+                             '<div id="showarea"></div>',
+                             '<span id="showmove">&#9654;</span>',
+                           '</div>'].join('');
     elements = {
       container: container,
       codewrap: container.firstChild,
       showwrap: container.lastChild,
       codearea: codewrap.firstChild,
-      showarea: showwrap.lastChild
+      codemove: codewrap.lastChild,
+      showarea: showwrap.firstChild,
+      showmove: showwrap.lastChild
     }
 
+    addEvent(window, 'resize', initSize);
     initEditor();
     return this;
   };
@@ -57,6 +67,17 @@
     }
   }
 
+  function addEvent(elem, type, handler) {
+    if (!elem) return;
+    if (elem.addEventListener) {
+      elem.addEventListener(type, handler, false);
+    } else if (elem.attachEvent) {
+      elem.attachEvent('on' + type, handler);
+    } else {
+      elem['on' + type] = handler;
+    }
+  }
+
   function loadStyles(url) {
     var link = document.createElement("link");
     link.rel = "stylesheet";
@@ -67,6 +88,7 @@
   }
 
   function initEditor() {
+    initSize();
     var code = elements['codearea'];
     code.onkeyup = preview;
     code.oncut = code.onpaste = timerPreview;
@@ -75,6 +97,59 @@
       MathJax.Hub.processUpdateDelay = 15;
     }
     preview();
+    bindMove();
+  }
+
+  function initSize() {
+    screen = (elements['container'].clientWidth > 540) ? 'large' : 'small';
+    mode = (screen == 'large') ? 'edit' : 'code';
+    resizeEditor(mode);
+  }
+
+  function bindMove() {
+    elements['codemove'].onclick = function(){
+      if (screen == 'large' && mode == 'code') {
+        resizeEditor('edit');
+      } else {
+        resizeEditor('show');
+        preview();
+      }
+    };
+    elements['showmove'].onclick = function(){
+      if (screen == 'large' && mode == 'show') {
+        resizeEditor('edit');
+      } else {
+        resizeEditor('code');
+      }
+    };
+  }
+
+  function resizeEditor(newmode) {
+    var c = elements['codewrap'];
+    var s = elements['showwrap'];
+    switch (newmode) {
+      case 'edit':
+        c.style.display = 'block';
+        c.style.left = 0 + 'px';
+        c.style.width = '50%';
+        s.style.display = 'block';
+        s.style.left = '50%';
+        s.style.width = '';
+        break;
+      case 'code':
+        c.style.display = 'block';
+        c.style.left = 0 + 'px';
+        c.style.width = '100%';
+        s.style.display = 'none';
+        break;
+      case 'show':
+        c.style.display = 'none';
+        s.style.display = 'block';
+        s.style.left = 0 + 'px';
+        s.style.width = '100%';
+        break;
+    }
+    mode = newmode;
   }
 
   function timerPreview() {
@@ -82,6 +157,7 @@
   }
 
   function preview() {
+    if (mode == 'code') return;
     var code = elements['codearea'], show = elements['showarea'];
     var body = splitText(code.value)[1];
     if (window.MathJax) {
