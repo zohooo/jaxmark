@@ -26,11 +26,11 @@
     loadStyles(path + 'jaxmark.css');
     loadStyles(path + 'theme/' + options.theme + '.css');
 
-    container.innerHTML = ['<div id="codewrap">',
+    container.innerHTML = ['<div id="codewrap" onclick="void(0)">',
                              '<textarea id="codearea">' + text + '</textarea>',
                              '<span id="codemove">&#9664;</span>',
                            '</div>',
-                           '<div id="showwrap">',
+                           '<div id="showwrap" onclick="void(0)">',
                              '<div id="showarea"></div>',
                              '<span id="showmove">&#9654;</span>',
                            '</div>'].join('');
